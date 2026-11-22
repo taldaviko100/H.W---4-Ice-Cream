@@ -2,10 +2,12 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, Q
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
 from matplotlib.figure import Figure
 import numpy as np
+from About import AboutWindow
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.about_window = AboutWindow()
 
         self.temperatures = []
         self.revenues = []
@@ -39,6 +41,10 @@ class MainWindow(QMainWindow):
         self.main_layout.addWidget(self.canvas)
 
         self.update_graph()
+
+        self.about_button = QPushButton("About")
+        self.about_button.clicked.connect(self.show_about)
+        self.main_layout.addWidget(self.about_button)
 
     def load_file(self):
         file_name, _ = QFileDialog.getOpenFileName(self, "Select ice cream data", "", "CSV files (*.csv)")
@@ -74,6 +80,9 @@ class MainWindow(QMainWindow):
         self.axes.spines["top"].set_visible(False)
         self.axes.spines["right"].set_visible(False)
         self.canvas.draw()
+
+    def show_about(self):
+        self.about_window.show()
 
 
 if __name__ == "__main__":
