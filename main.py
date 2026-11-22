@@ -57,12 +57,13 @@ class MainWindow(QMainWindow):
 
     def update_graph(self):
         self.axes.clear()
+        self.axes.scatter(self.temperatures, self.revenues, s=1)
 
-        self.axes.plot([0, 1, 2], [0, 1, 4])
-
-        self.axes.set_title("Temporary Graph")
-        self.axes.set_xlabel("X")
-        self.axes.set_ylabel("Y")
+        self.axes.set_title("Ice Cream Revenue vs Temperature")
+        self.axes.set_xlabel("Temperature")
+        self.axes.set_ylabel("Revenue (USD)")
+        self.axes.spines["top"].set_visible(False)
+        self.axes.spines["right"].set_visible(False)
         self.canvas.draw()
 
 
