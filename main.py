@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QPushButton, QFileDialog
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
 from matplotlib.figure import Figure
+import numpy as np
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -58,6 +59,14 @@ class MainWindow(QMainWindow):
     def update_graph(self):
         self.axes.clear()
         self.axes.scatter(self.temperatures, self.revenues, s=1)
+
+        if len(self.temperatures) >= 2:
+            coefficients = np.polyfit(self.temperatures, self.revenues, 1)
+            line_function = np.poly1d(coefficients)
+            line_x = np.linspace(min(self.temperatures), max(self.temperatures), 100)
+            line_y = line_function(line_x)
+            self.axes.plot(line_x, line_y, color="red", label=f"y = {coefficients[0]:.2f}x + {coefficients[1]:.2f}")
+            self.axes.legend()
 
         self.axes.set_title("Ice Cream Revenue vs Temperature")
         self.axes.set_xlabel("Temperature")
