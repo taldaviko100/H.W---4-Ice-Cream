@@ -44,6 +44,16 @@ class MainWindow(QMainWindow):
         if file_name:
             self.selected_file = file_name
             self.file_label.setText(file_name)
+            self.temperatures = []
+            self.revenues = []
+            with open(self.selected_file, "r") as f:
+                next(f)
+                for line in f:
+                    parts = line.split(",")
+                    self.temperatures.append(float(parts[0]))
+                    self.revenues.append(float(parts[1]))
+
+            self.update_graph()
 
     def update_graph(self):
         self.axes.clear()
