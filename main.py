@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QPushButton, QFileDialog
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
 from matplotlib.figure import Figure
 
@@ -22,6 +22,13 @@ class MainWindow(QMainWindow):
         self.title_label.setObjectName("title")
         self.main_layout.addWidget(self.title_label)
 
+        self.load_button = QPushButton("Load ice cream file")
+        self.load_button.clicked.connect(self.load_file)
+        self.main_layout.addWidget(self.load_button)
+
+        self.file_label = QLabel("No file selected")
+        self.main_layout.addWidget(self.file_label)
+
         self.figure = Figure(layout="constrained")
         self.canvas = FigureCanvasQTAgg(self.figure)
         self.axes = self.figure.add_subplot(111)
@@ -31,6 +38,12 @@ class MainWindow(QMainWindow):
         self.main_layout.addWidget(self.canvas)
 
         self.update_graph()
+
+    def load_file(self):
+        file_name, _ = QFileDialog.getOpenFileName(self, "Select ice cream data", "", "CSV files (*.csv)")
+        if file_name:
+            self.selected_file = file_name
+            self.file_label.setText(file_name)
 
     def update_graph(self):
         self.axes.clear()
